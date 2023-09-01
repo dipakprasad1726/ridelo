@@ -4,7 +4,7 @@ on:
   workflow_dispatch: { }
 
 env:
-  applicationfolder: ridelo
+  applicationfolder: spring-boot-hello-world-example
   AWS_REGION: ap-south-1
   S3BUCKET: arn:aws:s3:::codedeploystack-webappdeploymentbucket-12fnmzouqydsu
 
