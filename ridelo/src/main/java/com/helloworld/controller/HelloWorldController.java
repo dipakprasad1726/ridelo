@@ -3,10 +3,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 @RestController
-//@RequestMapping("/hi")
+@RequestMapping("api/")
 public class HelloWorldController 
-{ @RequestMapping("/")
-public String hello() 
+{
+    @GetMapping("/hi")
+    public String hello()
 {
 return "<h1> Congratulations. You have successfully deployed the sample Spring Boot Application. </h1>";
 }
