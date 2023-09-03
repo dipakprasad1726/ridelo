@@ -4,7 +4,7 @@ on:
   workflow_dispatch: { }
 
 env:
-  applicationfolder: ridelo
+  applicationfolder: management
   AWS_REGION: ap-south-1
   S3BUCKET: codedeploystack-webappdeploymentbucket-12fnmzouqydsu
 
