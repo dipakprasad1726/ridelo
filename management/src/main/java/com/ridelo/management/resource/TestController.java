@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/")
+@RequestMapping("/")
 public class TestController {
-
-    @GetMapping("/hi")
-    public String demo(){
-        return "Hurrey... its working";
+    @GetMapping("/")
+    public String hello()
+    {
+        return "<h1> Congratulations Dipak. You have successfully deployed the sample Spring Boot Application. </h1>";
     }
 }
