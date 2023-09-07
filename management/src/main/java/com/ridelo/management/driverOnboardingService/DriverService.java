@@ -1,7 +1,6 @@
 package com.ridelo.management.driverOnboardingService;
 
 import com.ridelo.management.entities.Driver;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
 
 import javax.mail.MessagingException;
@@ -22,7 +21,7 @@ public interface DriverService {
 
     Driver registration(Driver driver) throws MessagingException, UnsupportedEncodingException;
 
-    ResponseEntity<Object> updateProfile(Driver driver) throws MessagingException, UnsupportedEncodingException, JSONException;
+    ResponseEntity<Object> updateProfile(Driver driver) throws MessagingException, UnsupportedEncodingException;
 
     ResponseEntity<Object> updateAvailabilityStatus(UUID driverId);
 

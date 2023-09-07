@@ -9,7 +9,6 @@ import com.ridelo.management.entities.Documents;
 import com.ridelo.management.entities.Driver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,7 +78,7 @@ public class DriverResource {
     }
 
     @PostMapping("update/profile")
-    public ResponseEntity<Object> updateProfile(@RequestBody Driver driver) throws MessagingException, UnsupportedEncodingException, JSONException {
+    public ResponseEntity<Object> updateProfile(@RequestBody Driver driver) throws MessagingException, UnsupportedEncodingException {
         return driverService.updateProfile(driver);
     }
 

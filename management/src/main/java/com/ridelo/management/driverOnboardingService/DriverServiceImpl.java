@@ -6,7 +6,6 @@ import com.ridelo.management.model.EmailInfo;
 import com.ridelo.management.notificationService.EmailDataConstants;
 import com.ridelo.management.notificationService.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -91,7 +90,7 @@ public class DriverServiceImpl implements DriverService {
      * @throws UnsupportedEncodingException handle email exception
      */
     @Override
-    public ResponseEntity<Object> updateProfile(Driver driver) throws MessagingException, UnsupportedEncodingException, JSONException {
+    public ResponseEntity<Object> updateProfile(Driver driver) throws MessagingException, UnsupportedEncodingException {
         Driver oldRecord = driverRepository.findById(driver.getDriverId()).orElse(null);
         //todo: verify me
         if(oldRecord!=null){
