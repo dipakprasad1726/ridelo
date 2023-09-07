@@ -10,4 +10,9 @@ class ManagementApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testMe(){
+		System.out.println("hello world");
+	}
+
 }
