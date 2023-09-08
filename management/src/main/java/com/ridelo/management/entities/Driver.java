@@ -33,6 +33,7 @@ public class Driver {
     private boolean documentVerificationStatus = false;
     private boolean driverAvailabilityStatus = false;
     private boolean driverIsActive = true;
+    private String address;
     private long createdAt;
     private long updatedAt;
 

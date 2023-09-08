@@ -34,12 +34,6 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public List<Driver> getListOfAvailableDrivers(){
         return driverRepository.findAllActiveDrivers();
-//        Iterable<Driver> driverList = driverRepository.findAll();
-//        List<Driver> driverListFinal = new ArrayList<>();
-//        driverList.forEach(x->{if(x.isDriverAvailabilityStatus()){
-//            driverListFinal.add(x);
-//        }});
-//        return driverListFinal;
     }
 
     @Override
@@ -100,7 +94,10 @@ public class DriverServiceImpl implements DriverService {
             if(driver.getContact()!=null && !driver.getContact().equals("")){
                 oldRecord.setContact(driver.getContact());
             }
-            if(driver.getEmail()!=null && !driver.getContact().equals("") && !oldRecord.getEmail().equals(driver.getEmail())){
+            if(driver.getAddress()!=null && !driver.getAddress().equals("")){
+                oldRecord.setAddress(driver.getAddress());
+            }
+                if(driver.getEmail()!=null && !driver.getContact().equals("") && !oldRecord.getEmail().equals(driver.getEmail())){
                 oldRecord.setEmail(driver.getEmail());
                 EmailInfo emailInfo = EmailDataConstants.emailInfoMap.get
                         (EmailDataConstants.MessageType.EMAIL_VERIFICATION.toString());
@@ -162,6 +159,11 @@ public class DriverServiceImpl implements DriverService {
             return new ResponseEntity<>("Email verified successfully for "+driver.getName(), HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>("The Verification Link is invalid",HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public void deleteDriverById(UUID driverId) {
+        driverRepository.deleteById(driverId);
     }
 
 }

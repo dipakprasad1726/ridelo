@@ -26,4 +26,6 @@ public interface DriverService {
     ResponseEntity<Object> updateAvailabilityStatus(UUID driverId);
 
     ResponseEntity<Object> emailVerification(UUID driverId);
+
+    void deleteDriverById(UUID driverId);
 }

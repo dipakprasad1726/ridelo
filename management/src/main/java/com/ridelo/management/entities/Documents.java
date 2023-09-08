@@ -29,7 +29,7 @@ public class Documents {
 
     @ToString.Exclude
     @JsonBackReference
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "driverId", nullable = false, updatable = false, columnDefinition = "VARCHAR(36)")
     @Type(type = "org.hibernate.type.UUIDCharType")
     private Driver driverData;
