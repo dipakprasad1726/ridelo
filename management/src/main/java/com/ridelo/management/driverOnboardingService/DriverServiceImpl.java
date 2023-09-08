@@ -66,13 +66,14 @@ public class DriverServiceImpl implements DriverService {
                 .email(driver.getEmail())
                 .createdAt(System.currentTimeMillis())
                 .updatedAt(System.currentTimeMillis())
-                .contact(driver.getContact()).build());
+                .contact(driver.getContact())
+                 .driverIsActive(true).build());
          EmailInfo emailInfo = EmailDataConstants.emailInfoMap.get
                 (EmailDataConstants.MessageType.EMAIL_VERIFICATION.toString());
-         emailInfo.setBody(String.format(emailInfo.getBody(),driver.getName(),
+         emailInfo.setBody(String.format(emailInfo.getBody(),rDriver.getName(),
                 rDriver.getDriverId().toString()));
          emailService.sendEmail(EmailDataConstants.MessageType.EMAIL_VERIFICATION.toString()
-                ,driver.getEmail(),emailInfo);
+                ,rDriver.getEmail(),emailInfo);
          return rDriver;
     }
 
