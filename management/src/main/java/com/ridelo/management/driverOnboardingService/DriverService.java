@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DriverService {
-    Driver updateRegistration(Driver driver);
 
     List<Driver> getListOfAvailableDrivers();
 

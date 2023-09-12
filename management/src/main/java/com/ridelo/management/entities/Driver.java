@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@ToString
+//@ToString
 @Table(name = "driver")
 @Builder
 @AllArgsConstructor
@@ -22,11 +22,8 @@ public class Driver {
     @Column(updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID driverId;
-    @NonNull
     private String name;
-    @NonNull
     private String email;
-    @NonNull
     private String contact;
     private String dateOfBirth;
     private boolean isEmailVerified=false;
@@ -38,8 +35,21 @@ public class Driver {
     private long updatedAt;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "driverData", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "driverData", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Documents> documentsList;
 
+    @Override
+    public String toString() {
+        return
+                "driverId=" + driverId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", contact='" + contact + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", address='" + address + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
 

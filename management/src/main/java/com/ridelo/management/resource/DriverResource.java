@@ -7,6 +7,7 @@ import com.ridelo.management.databaseService.service.DocumentService;
 import com.ridelo.management.driverOnboardingService.DriverService;
 import com.ridelo.management.entities.Documents;
 import com.ridelo.management.entities.Driver;
+import com.ridelo.management.globalException.InvalidRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -38,11 +39,12 @@ public class DriverResource {
 
     @GetMapping("/info/{id}")
     public ResponseEntity<Object> driverInfo(@PathVariable String id){
-        Driver driver = driverService.getDriverById(UUID.fromString(id));
-        if(driver==null){
-            return new ResponseEntity<>("Invalid driver id...", HttpStatus.BAD_REQUEST);
+        try {
+            Driver driver = driverService.getDriverById(UUID.fromString(id));
+            return new ResponseEntity<>(driver, HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            throw new InvalidRequestException(e.getMessage());
         }
-        return new ResponseEntity<>(driver,HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/document/upload")
@@ -77,19 +79,29 @@ public class DriverResource {
         return driverService.updateAvailabilityStatus(UUID.fromString(driverId));
     }
 
-    @PostMapping("update/profile")
+    @PostMapping("/update/profile")
     public ResponseEntity<Object> updateProfile(@RequestBody Driver driver) throws MessagingException, UnsupportedEncodingException {
         return driverService.updateProfile(driver);
     }
 
-    @PostMapping("update/verification/status/{driverId}")
+    @PostMapping("/update/verification/status/{driverId}")
     public ResponseEntity<Object> updateDocumentVerificationStatus(@PathVariable String driverId) throws MessagingException, UnsupportedEncodingException {
         return documentService.documentVerificationStatusUpdate(UUID.fromString(driverId));
     }
 
-    @GetMapping("active")
+    @GetMapping("/active")
     public ResponseEntity<Object> getActiveDriversList(){
         return new ResponseEntity<>(driverService.getListOfAvailableDrivers(),HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteDriverById(@PathVariable("id") String driverId){
+        try {
+            driverService.deleteDriverById(UUID.fromString(driverId));
+        }catch (Exception e){
+            throw new InvalidRequestException(e.getMessage());
+        }
+        return new ResponseEntity<>("Driver id : "+driverId+" is deleted successfully",HttpStatus.ACCEPTED);
     }
 
 }

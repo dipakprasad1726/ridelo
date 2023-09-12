@@ -1,5 +1,6 @@
 package com.ridelo.management.notificationService;
 
+import com.ridelo.management.entities.Driver;
 import com.ridelo.management.model.EmailInfo;
 
 import java.util.HashMap;
@@ -28,7 +29,10 @@ public class EmailDataConstants {
             "Dear %s,<br>"
                     + "Your document verification status is updated:<br>"
                     + "<h3>Document Verification : %s</h3>"
-                    + "<br><br>Thank you,<br>"
+                    + "<br>Your device will be delivered at your registered address by our delivery partner " +
+                    "post your document verification: <br>"
+                    + "<h3>%s</h3> <br><br>"
+                    + "Thank you,<br>"
                     + "Ridelo.com Team<br><br>"
                     + "NOTE: Please do not reply to this message. Replies are routed to a mailbox that is not monitored.";
 
@@ -56,5 +60,14 @@ public class EmailDataConstants {
                 .subject("RIDELO: Document Verification Update")
                 .body(documentVerificationBody).build());
 
+    }
+
+    public static String buildDriverData(Driver driver){
+        return "<br>Name= " + driver.getName() +"<br>" +
+                "Email= " + driver.getEmail() + "<br>" +
+                "Contact= " + driver.getContact() + "<br>" +
+                "DateOfBirth= " + driver.getDateOfBirth() + "<br>" +
+                "Address= " + driver.getAddress() + "<br>" +
+                "UpdatedAt= " + driver.getUpdatedAt();
     }
 }

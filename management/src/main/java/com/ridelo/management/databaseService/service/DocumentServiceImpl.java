@@ -4,10 +4,12 @@ import com.amazonaws.services.glue.model.EntityNotFoundException;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.ridelo.management.amazon.AmazonS3Service;
+import com.ridelo.management.common.SuccessMessageConstants;
 import com.ridelo.management.databaseService.repository.DocumentsRepository;
 import com.ridelo.management.databaseService.repository.DriverRepository;
 import com.ridelo.management.entities.Documents;
 import com.ridelo.management.entities.Driver;
+import com.ridelo.management.globalException.InvalidDriverIdException;
 import com.ridelo.management.model.EmailInfo;
 import com.ridelo.management.notificationService.EmailDataConstants;
 import com.ridelo.management.notificationService.EmailService;
@@ -86,28 +88,23 @@ public class DocumentServiceImpl implements DocumentService{
 
     @Override
     public ResponseEntity<Object> documentVerificationStatusUpdate(UUID driverId) throws MessagingException, UnsupportedEncodingException {
-        Driver driver = driverRepository.findById(driverId).orElse(null);
-        if(driver!=null){
-//            if(driver.isDocumentVerificationStatus()){
-//                driver.setDriverAvailabilityStatus(!driver.isDocumentVerificationStatus());
-//            }
-            driver.setDocumentVerificationStatus(!driver.isDocumentVerificationStatus());
-            driverRepository.save(driver);
-            List<Documents> documentsList = driver.getDocumentsList();
-            //FOr now simply updating the status of all the documents together.
-            for (Documents doc:documentsList) {
-                doc.setVerificationStatus(!doc.isVerificationStatus());
-                documentsRepository.save(doc);
-            }
-            EmailInfo emailInfo = EmailDataConstants.emailInfoMap.get
-                    (EmailDataConstants.MessageType.DOCUMENT_VERIFICATION.toString());
-            emailInfo.setBody(String.format(emailInfo.getBody(),driver.getName(),
-                    driver.isDocumentVerificationStatus()));
-            emailService.sendEmail(EmailDataConstants.MessageType.DOCUMENT_VERIFICATION.toString()
-                    ,driver.getEmail(),emailInfo);
-            return new ResponseEntity<>("Document verification status updated for "+driver.getName()+" to "+
-                    driver.isDocumentVerificationStatus(), HttpStatus.ACCEPTED);
+        Driver driver = driverRepository.findById(driverId).orElseThrow(()->new InvalidDriverIdException(driverId));
+        driver.setDocumentVerificationStatus(!driver.isDocumentVerificationStatus());
+        driverRepository.save(driver);
+        List<Documents> documentsList = driver.getDocumentsList();
+        //For simplicity updating the status of all the documents together.
+        for (Documents doc:documentsList) {
+            doc.setVerificationStatus(!doc.isVerificationStatus());
+            documentsRepository.save(doc);
         }
-        return new ResponseEntity<>("The driver id is invalid",HttpStatus.NOT_FOUND);
+        EmailInfo emailInfo = EmailDataConstants.emailInfoMap.get
+                (EmailDataConstants.MessageType.DOCUMENT_VERIFICATION.toString());
+        emailInfo.setBody(String.format(emailInfo.getBody(),driver.getName(),
+                driver.isDocumentVerificationStatus(),driver.getAddress()));
+        emailService.sendEmail(EmailDataConstants.MessageType.DOCUMENT_VERIFICATION.toString()
+                ,driver.getEmail(),emailInfo);
+        return new ResponseEntity<>(SuccessMessageConstants.DOCUMENT_VERIFICATION_RESPONSE+
+                driver.getName()+" to "+
+                driver.isDocumentVerificationStatus(), HttpStatus.ACCEPTED);
     }
 }
